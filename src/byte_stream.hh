@@ -22,7 +22,8 @@ public:
   bool has_error() const { return error_; }; // Has the stream had an error?
 
 protected:
-  std::queue<char> buffer_; // 缓冲区
+  uint64_t first_string_left_size;
+  std::queue<std::string> buffer_; // 缓冲区
   uint64_t amount_; // 剩余容量
   uint64_t total_pushed_; // 总写入量
   uint64_t total_poped_; // 总读取量

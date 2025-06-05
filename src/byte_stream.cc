@@ -2,9 +2,15 @@
 #include "iostream"
 using namespace std;
 
-ByteStream::ByteStream(uint64_t capacity) :
-  capacity_(capacity), buffer_(), amount_(0), total_pushed_(0),
-  total_poped_(0), first_string_left_size(0), close_(false), error_(false) {
+ByteStream::ByteStream(uint64_t capacity)
+  : first_string_left_size(0),
+  buffer_(),
+  amount_(0),
+  total_pushed_(0),
+  total_poped_(0),
+  close_(false),
+  capacity_(capacity),
+  error_(false) {
 }
 
 bool Writer::is_closed() const {
