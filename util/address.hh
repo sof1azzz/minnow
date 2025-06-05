@@ -8,41 +8,39 @@
 #include <utility>
 
 //! Wrapper around [IPv4 addresses](@ref man7::ip) and DNS operations.
-class Address
-{
+class Address {
 public:
   //! \brief Wrapper around [sockaddr_storage](@ref man7::socket).
   //! \details A `sockaddr_storage` is enough space to store any socket address (IPv4 or IPv6).
-  class Raw
-  {
+  class Raw {
   public:
-    sockaddr_storage storage {}; //!< The wrapped struct itself.
+    sockaddr_storage storage{}; //!< The wrapped struct itself.
     // NOLINTBEGIN (*-explicit-*)
-    operator sockaddr*();
-    operator const sockaddr*() const;
+    operator sockaddr *();
+    operator const sockaddr *() const;
     // NOLINTEND (*-explicit-*)
   };
 
 private:
   socklen_t _size; //!< Size of the wrapped address.
-  Raw _address {}; //!< A wrapped [sockaddr_storage](@ref man7::socket) containing the address.
+  Raw _address{}; //!< A wrapped [sockaddr_storage](@ref man7::socket) containing the address.
 
   //! Constructor from ip/host, service/port, and hints to the resolver.
-  Address( const std::string& node, const std::string& service, const addrinfo& hints );
+  Address(const std::string &node, const std::string &service, const addrinfo &hints);
 
 public:
   //! Construct by resolving a hostname and servicename.
-  Address( const std::string& hostname, const std::string& service );
+  Address(const std::string &hostname, const std::string &service);
 
   //! Construct from dotted-quad string ("18.243.0.1") and numeric port.
-  explicit Address( const std::string& ip, std::uint16_t port = 0 );
+  explicit Address(const std::string &ip, std::uint16_t port = 0);
 
   //! Construct from a [sockaddr *](@ref man7::socket).
-  Address( const sockaddr* addr, std::size_t size );
+  Address(const sockaddr *addr, std::size_t size);
 
   //! Equality comparison.
-  bool operator==( const Address& other ) const;
-  bool operator!=( const Address& other ) const { return not operator==( other ); }
+  bool operator==(const Address &other) const;
+  bool operator!=(const Address &other) const { return not operator==(other); }
 
   //! \name Conversions
   //!@{
@@ -56,7 +54,7 @@ public:
   //! Numeric IP address as an integer (i.e., in [host byte order](\ref man3::byteorder)).
   uint32_t ipv4_numeric() const;
   //! Create an Address from a 32-bit raw numeric IP address
-  static Address from_ipv4_numeric( uint32_t ip_address );
+  static Address from_ipv4_numeric(uint32_t ip_address);
   //! Human-readable string, e.g., "8.8.8.8:53".
   std::string to_string() const;
   //!@}
@@ -67,10 +65,10 @@ public:
   //! Size of the underlying address storage.
   socklen_t size() const { return _size; }
   //! Const pointer to the underlying socket address storage.
-  const sockaddr* raw() const { return static_cast<const sockaddr*>( _address ); }
+  const sockaddr *raw() const { return static_cast<const sockaddr *>(_address); }
   //! Safely convert to underlying sockaddr type
   template<typename sockaddr_type>
-  const sockaddr_type* as() const;
+  const sockaddr_type *as() const;
 
   //!@}
 };
